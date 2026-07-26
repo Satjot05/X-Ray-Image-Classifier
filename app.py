@@ -1,5 +1,7 @@
 import io
+import os
 import time
+import urllib.request
 
 import numpy as np
 import pandas as pd
@@ -26,7 +28,8 @@ st.set_page_config(
 )
 
 CLASS_NAMES = ["NORMAL", "PNEUMONIA"]
-MODEL_PATH = "https://github.com/Satjot05/X-Ray-Image-Classifier/releases/download/python/pneumonia_classifier_best.pth"
+MODEL_PATH = "pneumonia_classifier_best.pth"
+MODEL_URL = "https://github.com/Satjot05/X-Ray-Image-Classifier/releases/download/python/pneumonia_classifier_best.pth"
 IMG_SIZE = 224
 
 st.markdown(
@@ -38,7 +41,6 @@ st.markdown(
         font-family: 'Inter', sans-serif;
     }
 
-    /* App background — animated gradient with radial lighting */
     .stApp {
         background-color: #0a0f22;
         background-image:
@@ -72,20 +74,12 @@ st.markdown(
         50%      { background-position: 0% 0%, 0% 0%, 46% 85%, 0% 0%; }
     }
 
-    /* Safely hide default Streamlit top toolbar without hiding the header container */
     #MainMenu { visibility: hidden; }
     footer { visibility: hidden; }
-    header[data-testid="stHeader"] {
-        background: transparent !important;
-    }
-    div[data-testid="stToolbar"] {
-        visibility: hidden;
-    }
-    div[data-testid="stDecoration"] {
-        visibility: hidden;
-    }
+    header[data-testid="stHeader"] { background: transparent !important; }
+    div[data-testid="stToolbar"] { visibility: hidden; }
+    div[data-testid="stDecoration"] { visibility: hidden; }
 
-    /* Ensure sidebar is explicitly styled and visible across all browsers */
     section[data-testid="stSidebar"] {
         background: linear-gradient(180deg, #0b1226 0%, #060a15 100%) !important;
         border-right: 1px solid rgba(255,255,255,0.08) !important;
@@ -94,7 +88,6 @@ st.markdown(
         visibility: visible !important;
     }
 
-    /* ---------- Responsive layout ---------- */
     .block-container {
         padding-top: 1.6rem;
         padding-bottom: 3rem;
@@ -103,40 +96,9 @@ st.markdown(
         max-width: 1400px;
     }
 
-    div[data-testid="stHorizontalBlock"] {
-        gap: 1rem;
-    }
-    div[data-testid="column"] {
-        margin-bottom: 0.6rem;
-    }
+    div[data-testid="stHorizontalBlock"] { gap: 1rem; }
+    div[data-testid="column"] { margin-bottom: 0.6rem; }
 
-    @media (max-width: 900px) {
-        .block-container { padding-top: 1.3rem; }
-        .dv-title { font-size: 2.1rem; }
-        .dv-subtitle { font-size: 0.9rem; margin-bottom: 1.1rem; }
-        .diag-result { font-size: 1.6rem; }
-        .spec-value { font-size: 1.1rem; }
-        .glass-card, .diag-card { padding: 1.2rem 1.3rem; }
-        div[data-testid="stHorizontalBlock"] { gap: 0.8rem; }
-    }
-    @media (max-width: 600px) {
-        .block-container {
-            padding-left: 1rem;
-            padding-right: 1rem;
-            padding-top: 1rem;
-        }
-        .dv-title { font-size: 1.6rem; }
-        .dv-subtitle { font-size: 0.85rem; }
-        .dv-badge-row { gap: 0.4rem; margin-bottom: 1.1rem; }
-        .dv-badge { font-size: 0.65rem; padding: 0.22rem 0.6rem; }
-        .spec-card { padding: 0.85rem 1rem; }
-        .diag-card { padding: 1.3rem 1.2rem; }
-        .diag-result { font-size: 1.4rem; }
-        div[data-testid="stHorizontalBlock"] { gap: 0.7rem; }
-        div[data-testid="column"] { margin-bottom: 0.8rem; }
-    }
-
-    /* ---------- Gradient hero title ---------- */
     .dv-title {
         font-size: 2.8rem;
         font-weight: 800;
@@ -169,7 +131,6 @@ st.markdown(
         font-family: 'JetBrains Mono', monospace;
     }
 
-    /* ---------- Navigation Tabs ---------- */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
         background: rgba(255,255,255,0.04);
@@ -198,7 +159,6 @@ st.markdown(
     .stTabs [data-baseweb="tab-highlight"] { display: none; }
     .stTabs [data-baseweb="tab-border"] { display: none; }
 
-    /* ---------- Glass Card Base ---------- */
     .glass-card {
         background: rgba(255, 255, 255, 0.045);
         border: 1px solid rgba(255, 255, 255, 0.09);
@@ -209,7 +169,6 @@ st.markdown(
         box-shadow: 0 8px 32px rgba(0,0,0,0.35);
     }
 
-    /* ---------- Metric Cards ---------- */
     .spec-card {
         background: rgba(255,255,255,0.04);
         border: 1px solid rgba(255,255,255,0.08);
@@ -236,14 +195,12 @@ st.markdown(
     }
     .spec-icon { font-size: 1.4rem; margin-bottom: 0.4rem; opacity: 0.85;}
 
-    /* ---------- Upload Zone ---------- */
     section[data-testid="stFileUploaderDropzone"] {
         background: rgba(255,255,255,0.03) !important;
         border: 1.5px dashed rgba(79,157,255,0.4) !important;
         border-radius: 16px !important;
     }
 
-    /* ---------- Diagnostic Result Cards ---------- */
     .diag-card {
         border-radius: 20px;
         padding: 1.8rem 2rem;
@@ -299,7 +256,6 @@ st.markdown(
         color: #dde4f3;
     }
 
-    /* ---------- Sidebar Styling ---------- */
     .sb-logo {
         display:flex; align-items:center; gap:0.6rem;
         margin-bottom: 0.2rem;
@@ -328,7 +284,6 @@ st.markdown(
         margin-top: 1.5rem;
     }
 
-    /* Progress bar tint */
     .stProgress > div > div > div > div {
         background: linear-gradient(90deg, #4f9dff, #7ee8fa);
     }
@@ -342,23 +297,45 @@ st.markdown(
 FORCE_CPU = True
 
 
+def download_model_if_missing():
+    if not os.path.exists(MODEL_PATH) or os.path.getsize(MODEL_PATH) < 1_000_000:
+        if MODEL_URL:
+            try:
+                req = urllib.request.Request(
+                    MODEL_URL,
+                    headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"},
+                )
+                with urllib.request.urlopen(req) as response, open(MODEL_PATH, "wb") as out_file:
+                    out_file.write(response.read())
+            except Exception as download_err:
+                return False, str(download_err)
+    return os.path.exists(MODEL_PATH) and os.path.getsize(MODEL_PATH) > 1_000_000, None
+
+
 @st.cache_resource(show_spinner=False)
 def load_model():
+    download_success, err_msg = download_model_if_missing()
+
     if FORCE_CPU:
         device = torch.device("cpu")
     else:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     model = models.resnet18(weights=None)
     model.fc = nn.Linear(model.fc.in_features, 2)
-    try:
-        state_dict = torch.load(MODEL_PATH, map_location=device)
-        model.load_state_dict(state_dict)
-        loaded = True
-    except FileNotFoundError:
-        loaded = False
+    loaded = False
+
+    if download_success:
+        try:
+            state_dict = torch.load(MODEL_PATH, map_location=device)
+            model.load_state_dict(state_dict)
+            loaded = True
+        except Exception:
+            loaded = False
+
     model.eval()
     model.to(device)
-    return model, device, loaded
+    return model, device, loaded, err_msg
 
 
 preprocess = transforms.Compose(
@@ -369,7 +346,7 @@ preprocess = transforms.Compose(
     ]
 )
 
-model, device, model_loaded = load_model()
+model, device, model_loaded, download_error = load_model()
 
 with st.sidebar:
     st.markdown(
@@ -385,11 +362,13 @@ with st.sidebar:
 
     st.markdown("##### Model Status")
     if model_loaded:
-        st.success(f"`{MODEL_PATH}` loaded", icon="✅")
+        st.success("Trained model weights loaded (`~45 MB`)", icon="✅")
         num_params = sum(p.numel() for p in model.parameters())
         st.caption(f"{num_params / 1e6:.1f}M parameters · ResNet18 backbone")
     else:
-        st.warning(f"`{MODEL_PATH}` not found — running in demo mode.", icon="⚠️")
+        st.warning("Running in Demo Mode", icon="⚠️")
+        if download_error:
+            st.error(f"Download Error: {download_error}", icon="❌")
 
     st.markdown("---")
 
@@ -407,17 +386,14 @@ with st.sidebar:
         st.markdown(
             """
             **Architecture**
-            ResNet18 transfer learning with frozen convolutional backbone and
+            ResNet18 transfer learning with frozen convolutional base and
             re-initialized classification head (`fc → Linear(512, 2)`).
 
             **Input Pipeline**
-            `Resize(224×224)` → `RandomHorizontalFlip` (train) → `ToTensor` → ImageNet `Normalize`.
+            `Resize(224×224)` → `ToTensor` → ImageNet `Normalize`.
 
             **Loss Function**
-            `CrossEntropyLoss` with class weights computed from inverse frequency.
-
-            **Optimization**
-            Adam optimizer · Validation accuracy checkpointing via `copy.deepcopy`.
+            `CrossEntropyLoss` with inverse-frequency class weights.
             """
         )
 
@@ -425,12 +401,7 @@ with st.sidebar:
         st.markdown(
             """
             Pediatric chest X-ray dataset (Kaggle chest_xray).
-
-            **Training set:** 5,216 images
-            — 1,341 NORMAL · 3,875 PNEUMONIA (~2.9× imbalance)
-
-            Inverse-frequency loss weights (`Normal ≈ 1.94`, `Pneumonia ≈ 0.67`)
-            correct for dataset skew.
+            **Training set:** 5,216 images (1,341 Normal · 3,875 Pneumonia).
             """
         )
 
@@ -439,9 +410,7 @@ with st.sidebar:
         <div class="sb-disclaimer">
         <strong>⚠️ Clinical Disclaimer</strong><br>
         This tool is an academic prototype (6th-semester project) and
-        is <strong>not</strong> a certified diagnostic device. Outputs
-        must not be used for real clinical decision-making. Always
-        consult a licensed radiologist or physician.
+        is <strong>not</strong> a certified diagnostic device.
         </div>
         """,
         unsafe_allow_html=True,
@@ -516,9 +485,7 @@ with tab_diagnostics:
                     st.image(image, caption="Uploaded radiograph", use_container_width=True)
                 except UnidentifiedImageError:
                     st.error(
-                        "This file couldn't be read as an image. If you're on "
-                        "macOS, make sure you didn't upload a hidden `._` "
-                        "metadata file created alongside the real image.",
+                        "This file couldn't be read as an image.",
                         icon="🚫",
                     )
                 except Exception as e:
@@ -579,7 +546,7 @@ with tab_diagnostics:
                             f"""
                             <div class="diag-card diag-normal">
                                 <div class="diag-status">Diagnostic Result</div>
-                                <div class="diag-result">✅ Normal</div>
+                                <div class="diag-result">Normal</div>
                                 <div class="diag-confidence">Model confidence: {confidence:.2f}%</div>
                                 <div class="diag-note-label">Clinical Note</div>
                                 <div class="diag-note-text">
@@ -622,10 +589,8 @@ with tab_diagnostics:
 
                     if not model_loaded:
                         st.info(
-                            f"No trained checkpoint found at `{MODEL_PATH}` — this "
-                            "result was generated in demo mode so the interface "
-                            "can be explored end-to-end. Place your `.pth` file "
-                            "alongside `app.py` for real model inference.",
+                            "Running in demo mode. Make sure your GitHub repository and Release "
+                            "are set to **Public** so Streamlit can auto-download the `.pth` file.",
                             icon="ℹ️",
                         )
                 except Exception as e:
@@ -664,24 +629,6 @@ with tab_insights:
         {"Images": [1341, 3875]}, index=["NORMAL", "PNEUMONIA"]
     )
     st.bar_chart(class_dist)
-    st.caption(
-        "~2.9× class imbalance, corrected in the loss function via "
-        "inverse-frequency class weights (Normal ≈ 1.94, Pneumonia ≈ 0.67)."
-    )
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("##### Architecture & Pipeline Summary")
-    st.markdown(
-        """
-        <div class="glass-card">
-        <b>1. Preprocessing</b> → Resize(224×224) → ToTensor → ImageNet Normalize<br><br>
-        <b>2. Convolutional Backbone</b> → ResNet18 (ImageNet pretrained, frozen weights)<br><br>
-        <b>3. Classification Head</b> → Linear(512 → 2), trained with class weights<br><br>
-        <b>4. Validation Tracking</b> → Epoch checkpointing via accuracy evaluation
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
 with tab_about:
     st.markdown("#### ℹ️ About This Project")
@@ -689,21 +636,7 @@ with tab_about:
         """
         <div class="glass-card">
         <b>DeepVision Medical AI</b> is a 6th-semester academic project
-        exploring AI-assisted triage for pediatric pneumonia detection
-        from chest X-rays, using transfer learning on ResNet18.
-        <br><br>
-        It is built as a proof-of-concept for coursework demonstration and evaluation.
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown(
-        """
-        <div class="sb-disclaimer" style="margin-top:0;">
-        <strong>⚠️ Clinical Disclaimer</strong><br>
-        This tool must not be used for real clinical decision-making.
-        Always consult a licensed radiologist or physician for an actual diagnosis.
+        exploring AI-assisted triage for pediatric pneumonia detection.
         </div>
         """,
         unsafe_allow_html=True,
@@ -713,8 +646,7 @@ st.markdown("<br><hr>", unsafe_allow_html=True)
 st.markdown(
     """
     <div style="text-align:center; color:#5c6a8c; font-size:0.78rem; letter-spacing:0.03em;">
-        DeepVision Medical AI &nbsp;·&nbsp; 6th Semester Academic Project &nbsp;·&nbsp;
-        Built with PyTorch &amp; Streamlit &nbsp;·&nbsp; Not for clinical use
+        DeepVision Medical AI &nbsp;·&nbsp; 6th Semester Academic Project
     </div>
     """,
     unsafe_allow_html=True,
