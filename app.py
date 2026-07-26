@@ -26,7 +26,7 @@ st.set_page_config(
 )
 
 CLASS_NAMES = ["NORMAL", "PNEUMONIA"]
-MODEL_PATH = "pneumonia_classifier_best.pth"
+MODEL_PATH = "https://github.com/Satjot05/X-Ray-Image-Classifier/releases/download/python/pneumonia_classifier_best.pth"
 IMG_SIZE = 224
 
 st.markdown(
