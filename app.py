@@ -105,13 +105,14 @@ st.markdown(
         div[data-testid="stVerticalBlock"] div[data-testid="stColumn"],
         div[data-testid="column"],
         div[data-testid="stColumn"] {
-            margin-bottom: 1.4rem !important;
+            margin-bottom: 0.5rem !important;
         }
         div[data-testid="stHorizontalBlock"] {
             gap: 1.4rem !important;
             row-gap: 1.4rem !important;
         }
-
+        .spec-card { padding: 1.1rem 1.2rem; 
+        }
  
         div[data-testid="stTabs"] [data-baseweb="tab"],
         div[data-testid="stTabs"] [role="tab"] {
