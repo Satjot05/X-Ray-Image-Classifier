@@ -96,23 +96,27 @@ st.markdown(
     div[data-testid="stHorizontalBlock"] { gap: 1.1rem; }
     div[data-testid="column"] { margin-bottom: 0.8rem; }
     
- /* ---------- Mobile: stacked spec-cards need more breathing room,
+  /* ---------- Mobile: stacked spec-cards need more breathing room,
        and the tab row should scroll on one line instead of wrapping
-       unevenly onto two rows ---------- */
+       unevenly onto two rows. Covers both "column" and "stColumn" since
+       the attribute name differs across Streamlit versions. ---------- */
     @media (max-width: 640px) {
-        div[data-testid="column"] { margin-bottom: 1.1rem; }
+        div[data-testid="stVerticalBlock"] div[data-testid="column"],
+        div[data-testid="stVerticalBlock"] div[data-testid="stColumn"],
+        div[data-testid="column"],
+        div[data-testid="stColumn"] {
+            margin-bottom: 1.4rem !important;
+        }
+        div[data-testid="stHorizontalBlock"] {
+            gap: 1.4rem !important;
+            row-gap: 1.4rem !important;
+        }
         .spec-card { padding: 1.1rem 1.2rem; }
  
-        div[data-testid="stTabs"] [data-baseweb="tab-list"],
-        div[data-testid="stTabs"] [role="tablist"] {
-            flex-wrap: nowrap !important;
-            overflow-x: auto !important;
-            justify-content: flex-start !important;
-        }
         div[data-testid="stTabs"] [data-baseweb="tab"],
         div[data-testid="stTabs"] [role="tab"] {
             flex: 0 0 auto !important;
-            padding: 2px 2px !important;
+            padding: 0 0.85rem !important;
             font-size: 0.8rem !important;
         }
     }
