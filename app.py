@@ -168,7 +168,7 @@ st.markdown(
         color: #8a94b3 !important;
         font-weight: 600 !important;
         font-size: 0.86rem !important;
-        padding: 0 1.1rem !important;
+        padding: 0 0.85rem  !important;
         background: transparent !important;
     }
     div[data-testid="stTabs"] [aria-selected="true"] {
