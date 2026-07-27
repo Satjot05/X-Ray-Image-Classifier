@@ -100,8 +100,8 @@ st.markdown(
        and the tab row should scroll on one line instead of wrapping
        unevenly onto two rows ---------- */
     @media (max-width: 640px) {
-        div[data-testid="column"] { margin-bottom: 1.1rem; }
-        .spec-card { padding: 1.5rem 2rem; }
+        div[data-testid="column"] { margin-bottom: 1.5rem; }
+        .spec-card { padding: 2rem 3rem; }
  
         div[data-testid="stTabs"] [data-baseweb="tab-list"],
         div[data-testid="stTabs"] [role="tablist"] {
