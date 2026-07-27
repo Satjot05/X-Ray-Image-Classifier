@@ -111,7 +111,7 @@ st.markdown(
             gap: 1.4rem !important;
             row-gap: 1.4rem !important;
         }
-        .spec-card { padding: 1.1rem 1.2rem; }
+
  
         div[data-testid="stTabs"] [data-baseweb="tab"],
         div[data-testid="stTabs"] [role="tab"] {
