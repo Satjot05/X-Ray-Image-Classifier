@@ -96,16 +96,13 @@ st.markdown(
     div[data-testid="stHorizontalBlock"] { gap: 1.1rem; }
     div[data-testid="column"] { margin-bottom: 0.8rem; }
     
-  /* ---------- Mobile: stacked spec-cards need more breathing room,
-       and the tab row should scroll on one line instead of wrapping
-       unevenly onto two rows. Covers both "column" and "stColumn" since
-       the attribute name differs across Streamlit versions. ---------- */
+  /* ---------- Mobile---------- */
     @media (max-width: 640px) {
         div[data-testid="stVerticalBlock"] div[data-testid="column"],
         div[data-testid="stVerticalBlock"] div[data-testid="stColumn"],
         div[data-testid="column"],
         div[data-testid="stColumn"] {
-            margin-bottom: 0.5rem !important;
+            margin-bottom: 0.4rem !important;
         }
         div[data-testid="stHorizontalBlock"] {
             gap: 1.4rem !important;
