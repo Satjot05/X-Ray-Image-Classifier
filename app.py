@@ -101,7 +101,7 @@ st.markdown(
        unevenly onto two rows ---------- */
     @media (max-width: 640px) {
         div[data-testid="column"] { margin-bottom: 1.1rem; }
-        .spec-card { padding: 1.1rem 1.2rem; }
+        .spec-card { padding: 1.5rem 2rem; }
  
         div[data-testid="stTabs"] [data-baseweb="tab-list"],
         div[data-testid="stTabs"] [role="tablist"] {
