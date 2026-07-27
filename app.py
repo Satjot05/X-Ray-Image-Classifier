@@ -421,7 +421,7 @@ st.markdown(
 )
 st.markdown(
     '<div class="dv-subtitle">Pediatric Pneumonia Detection System · '
-    "AI-assisted chest radiograph triage</div>",
+    "AI-assisted chest x-ray classification</div>",
     unsafe_allow_html=True,
 )
 st.markdown(
@@ -638,7 +638,7 @@ with tab_about:
         """
         <div class="glass-card">
         <b>DeepVision Medical AI</b> is a 6th-semester academic project
-        exploring AI-assisted triage for pediatric pneumonia detection.
+        exploring AI-assisted Web app for pediatric pneumonia detection.
         </div>
         """,
         unsafe_allow_html=True,
