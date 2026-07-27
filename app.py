@@ -41,254 +41,251 @@ st.markdown(
         font-family: 'Inter', sans-serif;
     }
 
+    /* ---------- Background: professional, static (no animation), with
+       enough tonal variation for the glass/blur cards to read against ---------- */
     .stApp {
-        background-color: #0a0f22;
+        background-color: #0a0f1e;
         background-image:
-            radial-gradient(circle 380px at 8% 12%, rgba(79,157,255,0.28), transparent 70%),
-            radial-gradient(circle 420px at 92% 45%, rgba(185,139,255,0.24), transparent 70%),
-            radial-gradient(circle 320px at 38% 95%, rgba(255,139,196,0.20), transparent 70%),
-            linear-gradient(120deg, #0a1230, #0f1c3f, #131338, #0a1c33, #0a1230);
-        background-repeat: no-repeat;
-        background-size: 140% 140%, 140% 140%, 140% 140%, 300% 300%;
-        animation: dv-orb-1 17s ease-in-out infinite,
-                   dv-orb-2 21s ease-in-out infinite,
-                   dv-orb-3 19s ease-in-out infinite,
-                   dv-gradient-shift 26s ease infinite;
-        color: #e7ecf7;
-    }
-    @keyframes dv-gradient-shift {
-        0%   { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
-        50%  { background-position: 0% 50%, 0% 50%, 0% 50%, 100% 50%; }
-        100% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
-    }
-    @keyframes dv-orb-1 {
-        0%, 100% { background-position: 8% 12%, 0% 0%, 0% 0%, 0% 0%; }
-        50%      { background-position: 16% 20%, 0% 0%, 0% 0%, 0% 0%; }
-    }
-    @keyframes dv-orb-2 {
-        0%, 100% { background-position: 0% 0%, 92% 45%, 0% 0%, 0% 0%; }
-        50%      { background-position: 0% 0%, 84% 55%, 0% 0%, 0% 0%; }
-    }
-    @keyframes dv-orb-3 {
-        0%, 100% { background-position: 0% 0%, 0% 0%, 38% 95%, 0% 0%; }
-        50%      { background-position: 0% 0%, 0% 0%, 46% 85%, 0% 0%; }
+            radial-gradient(1100px 700px at 15% -10%, rgba(48,84,150,0.35), transparent 60%),
+            radial-gradient(900px 600px at 100% 10%, rgba(70,60,120,0.22), transparent 55%),
+            radial-gradient(1000px 800px at 50% 120%, rgba(20,40,70,0.4), transparent 60%),
+            linear-gradient(160deg, #0c1326 0%, #0a0f1e 45%, #0b0f1c 100%);
+        background-attachment: fixed;
+        color: #e6e9f2;
     }
 
     #MainMenu { visibility: hidden; }
     footer { visibility: hidden; }
     header[data-testid="stHeader"] { background: transparent !important; }
-    div[data-testid="stToolbar"] { visibility: hidden; }
     div[data-testid="stDecoration"] { visibility: hidden; }
 
-    section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0b1226 0%, #060a15 100%) !important;
-        border-right: 1px solid rgba(255,255,255,0.08) !important;
-        z-index: 100 !important;
-        display: flex !important;
-        visibility: visible !important;
+    /* Keep the deploy/menu icons out of the toolbar, but never touch the
+       sidebar collapse/expand arrow - it lives in this same toolbar area. */
+    div[data-testid="stToolbar"] button[title="Deploy this app"],
+    div[data-testid="stToolbar"] [data-testid="stToolbarActions"] {
+        visibility: hidden;
     }
+
+    /* The little arrow that reopens the sidebar once it's collapsed.
+       This must always stay visible and above everything else, or the
+       sidebar becomes permanently stuck closed. */
+    div[data-testid="collapsedControl"],
+    button[data-testid="stBaseButton-headerNoPadding"],
+    button[data-testid="stSidebarCollapseButton"] {
+        visibility: visible !important;
+        display: flex !important;
+        opacity: 1 !important;
+        z-index: 999999 !important;
+    }
+
+    /* ---------- Sidebar: let Streamlit control open/collapse ---------- */
+    section[data-testid="stSidebar"] {
+        background: #0c1424 !important;
+        border-right: 1px solid rgba(255,255,255,0.07) !important;
+    }
+
 
     .block-container {
-        padding-top: 1.6rem;
-        padding-bottom: 3rem;
-        padding-left: clamp(1rem, 4vw, 3rem);
-        padding-right: clamp(1rem, 4vw, 3rem);
-        max-width: 1400px;
+        padding-top: 2.4rem;
+        padding-bottom: 4rem;
+        padding-left: clamp(1.5rem, 4vw, 3.5rem);
+        padding-right: clamp(1.5rem, 4vw, 3.5rem);
+        max-width: 1360px;
     }
 
-    div[data-testid="stHorizontalBlock"] { gap: 1rem; }
-    div[data-testid="column"] { margin-bottom: 0.6rem; }
+    div[data-testid="stHorizontalBlock"] { gap: 1.1rem; }
+    div[data-testid="column"] { margin-bottom: 0.8rem; }
 
+    /* ---------- Header ---------- */
     .dv-title {
-        font-size: 2.8rem;
-        font-weight: 800;
-        letter-spacing: -0.03em;
-        background: linear-gradient(90deg, #4f9dff 0%, #7ee8fa 35%, #b98bff 70%, #ff8bc4 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 0;
-        line-height: 1.15;
+        font-size: 2.4rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: #f2f4fa;
+        margin-bottom: 0.2rem;
+        line-height: 1.2;
+    }
+    .dv-title .accent {
+        color: #5fa8ff;
     }
     .dv-subtitle {
-        color: #92a1c4;
-        font-size: 1.02rem;
+        color: #8a94b3;
+        font-size: 1rem;
         font-weight: 400;
-        margin-top: 0.2rem;
-        margin-bottom: 1.4rem;
+        margin-top: 0.15rem;
+        margin-bottom: 1.6rem;
         letter-spacing: 0.01em;
     }
-    .dv-badge-row { display:flex; gap:0.5rem; margin-bottom: 1.4rem; flex-wrap: wrap;}
+    .dv-badge-row { display:flex; gap:0.5rem; margin-bottom: 1.8rem; flex-wrap: wrap;}
     .dv-badge {
-        background: rgba(79,157,255,0.08);
-        border: 1px solid rgba(79,157,255,0.35);
-        color: #8fc2ff;
-        padding: 0.28rem 0.75rem;
-        border-radius: 999px;
-        font-size: 0.75rem;
+        background: rgba(95,168,255,0.07);
+        border: 1px solid rgba(95,168,255,0.28);
+        color: #7fb4ff;
+        padding: 0.3rem 0.8rem;
+        border-radius: 6px;
+        font-size: 0.72rem;
         font-weight: 500;
-        letter-spacing: 0.03em;
+        letter-spacing: 0.04em;
         font-family: 'JetBrains Mono', monospace;
     }
 
+    /* ---------- Tabs ---------- */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 6px;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.09);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border-radius: 14px;
-        padding: 6px;
-        margin-bottom: 1.6rem;
+        gap: 4px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 10px;
+        padding: 5px;
+        margin-bottom: 2rem;
         flex-wrap: wrap;
     }
     .stTabs [data-baseweb="tab"] {
-        height: 42px;
-        border-radius: 10px;
-        color: #92a1c4;
+        height: 40px;
+        border-radius: 7px;
+        color: #8a94b3;
         font-weight: 600;
-        font-size: 0.88rem;
+        font-size: 0.86rem;
         padding: 0 1.1rem;
         background: transparent;
     }
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(90deg, rgba(79,157,255,0.22), rgba(185,139,255,0.22));
-        color: #eef2fb !important;
-        box-shadow: inset 0 0 0 1px rgba(79,157,255,0.35);
+        background: rgba(95,168,255,0.14);
+        color: #f2f4fa !important;
+        box-shadow: inset 0 0 0 1px rgba(95,168,255,0.3);
     }
     .stTabs [data-baseweb="tab-highlight"] { display: none; }
     .stTabs [data-baseweb="tab-border"] { display: none; }
 
+    /* ---------- Cards ---------- */
     .glass-card {
-        background: rgba(255, 255, 255, 0.045);
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        border-radius: 18px;
-        padding: 1.4rem 1.6rem;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+        background: rgba(255, 255, 255, 0.035);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: 12px;
+        padding: 1.6rem 1.8rem;
     }
 
     .spec-card {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border-radius: 16px;
-        padding: 1.1rem 1.3rem;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 12px;
+        padding: 1.3rem 1.4rem;
         text-align: left;
         height: 100%;
     }
     .spec-label {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         text-transform: uppercase;
-        letter-spacing: 0.09em;
+        letter-spacing: 0.08em;
         color: #7d8bb0;
         font-weight: 600;
-        margin-bottom: 0.35rem;
+        margin-bottom: 0.4rem;
     }
     .spec-value {
-        font-size: 1.35rem;
+        font-size: 1.3rem;
         font-weight: 700;
         color: #eef2fb;
         font-family: 'JetBrains Mono', monospace;
     }
-    .spec-icon { font-size: 1.4rem; margin-bottom: 0.4rem; opacity: 0.85;}
+    .spec-icon { font-size: 1.3rem; margin-bottom: 0.5rem; opacity: 0.8;}
 
     section[data-testid="stFileUploaderDropzone"] {
-        background: rgba(255,255,255,0.03) !important;
-        border: 1.5px dashed rgba(79,157,255,0.4) !important;
-        border-radius: 16px !important;
+        background: rgba(255,255,255,0.025) !important;
+        border: 1.5px dashed rgba(95,168,255,0.35) !important;
+        border-radius: 12px !important;
     }
 
+    /* ---------- Diagnostic result card ---------- */
     .diag-card {
-        border-radius: 20px;
-        padding: 1.8rem 2rem;
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        margin-top: 0.5rem;
+        border-radius: 14px;
+        padding: 2rem 2.2rem;
+        margin-top: 0.6rem;
         border: 1px solid;
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
     }
     .diag-normal {
-        background: linear-gradient(135deg, rgba(34,197,94,0.14), rgba(34,197,94,0.03));
-        border-color: rgba(34,197,94,0.45);
-        box-shadow: 0 8px 32px rgba(34,197,94,0.12);
+        background: rgba(34,197,94,0.06);
+        border-color: rgba(34,197,94,0.35);
     }
     .diag-pneumonia {
-        background: linear-gradient(135deg, rgba(239,68,68,0.16), rgba(239,68,68,0.03));
-        border-color: rgba(239,68,68,0.5);
-        box-shadow: 0 8px 32px rgba(239,68,68,0.14);
+        background: rgba(239,68,68,0.07);
+        border-color: rgba(239,68,68,0.4);
     }
     .diag-status {
-        font-size: 0.78rem;
+        font-size: 0.75rem;
         font-weight: 700;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        opacity: 0.85;
-        margin-bottom: 0.3rem;
+        opacity: 0.8;
+        margin-bottom: 0.4rem;
     }
     .diag-result {
-        font-size: 2.1rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        margin-bottom: 0.6rem;
+        font-size: 1.9rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin-bottom: 0.7rem;
     }
     .diag-normal .diag-result { color: #4ade80; }
     .diag-pneumonia .diag-result { color: #f87171; }
     .diag-confidence {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         color: #cbd5e8;
-        margin-bottom: 0.9rem;
+        margin-bottom: 1.1rem;
     }
     .diag-note-label {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.07em;
         color: #93a1c2;
         font-weight: 700;
-        margin-bottom: 0.35rem;
-        margin-top: 0.6rem;
+        margin-bottom: 0.4rem;
+        margin-top: 0.7rem;
     }
     .diag-note-text {
-        font-size: 0.92rem;
-        line-height: 1.55;
-        color: #dde4f3;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #d6dcec;
     }
 
+    /* ---------- Sidebar branding ---------- */
     .sb-logo {
         display:flex; align-items:center; gap:0.6rem;
         margin-bottom: 0.2rem;
     }
-    .sb-logo-icon { font-size: 1.8rem; }
+    .sb-logo-icon { font-size: 1.6rem; }
     .sb-logo-text {
-        font-size: 1.15rem;
-        font-weight: 800;
+        font-size: 1.1rem;
+        font-weight: 700;
         color: #eef2fb;
         letter-spacing: -0.01em;
     }
     .sb-logo-sub {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         color: #6f7ea3;
         letter-spacing: 0.05em;
-        margin-bottom: 1.4rem;
+        margin-bottom: 1.6rem;
     }
     .sb-disclaimer {
-        background: rgba(239,68,68,0.08);
-        border: 1px solid rgba(239,68,68,0.3);
-        border-radius: 12px;
-        padding: 0.85rem 1rem;
-        font-size: 0.74rem;
-        line-height: 1.5;
-        color: #f2b8b8;
-        margin-top: 1.5rem;
+        background: rgba(239,68,68,0.06);
+        border: 1px solid rgba(239,68,68,0.25);
+        border-radius: 10px;
+        padding: 0.9rem 1rem;
+        font-size: 0.73rem;
+        line-height: 1.55;
+        color: #f0b8b8;
+        margin-top: 1.6rem;
     }
 
     .stProgress > div > div > div > div {
-        background: linear-gradient(90deg, #4f9dff, #7ee8fa);
+        background: #5fa8ff;
     }
 
-    hr { border-color: rgba(255,255,255,0.08); }
+    hr { border-color: rgba(255,255,255,0.07); }
     </style>
     """,
     unsafe_allow_html=True,
@@ -362,7 +359,7 @@ with st.sidebar:
 
     st.markdown("##### Model Status")
     if model_loaded:
-        st.success("Trained model weights loaded (`~45 MB`)", icon="✅")
+        st.success("Trained model weights loaded")
         num_params = sum(p.numel() for p in model.parameters())
         st.caption(f"{num_params / 1e6:.1f}M parameters · ResNet18 backbone")
     else:
@@ -416,7 +413,10 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
-st.markdown('<div class="dv-title">DeepVision Medical AI</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="dv-title">DeepVision <span class="accent">Medical AI</span></div>',
+    unsafe_allow_html=True,
+)
 st.markdown(
     '<div class="dv-subtitle">Pediatric Pneumonia Detection System · '
     "AI-assisted chest radiograph triage</div>",
@@ -458,7 +458,7 @@ with tab_diagnostics:
                 unsafe_allow_html=True,
             )
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<div style='height:1.8rem'></div>", unsafe_allow_html=True)
 
     left, right = st.columns([1, 1.15], gap="large")
 
@@ -623,7 +623,7 @@ with tab_insights:
             unsafe_allow_html=True,
         )
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<div style='height:1.8rem'></div>", unsafe_allow_html=True)
     st.markdown("##### Training Set Class Distribution")
     class_dist = pd.DataFrame(
         {"Images": [1341, 3875]}, index=["NORMAL", "PNEUMONIA"]
