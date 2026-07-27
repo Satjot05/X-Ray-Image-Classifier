@@ -112,7 +112,7 @@ st.markdown(
         div[data-testid="stTabs"] [data-baseweb="tab"],
         div[data-testid="stTabs"] [role="tab"] {
             flex: 0 0 auto !important;
-            padding: 0 2px !important;
+            padding: 2px 2px !important;
             font-size: 0.8rem !important;
         }
     }
