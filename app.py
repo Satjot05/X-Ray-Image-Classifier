@@ -129,33 +129,35 @@ st.markdown(
         font-family: 'JetBrains Mono', monospace;
     }
 
-    /* ---------- Tabs ---------- */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 4px;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.07);
-        border-radius: 10px;
-        padding: 5px;
-        margin-bottom: 2rem;
-        flex-wrap: wrap;
+     /* ---------- Tabs ---------- */
+    div[data-testid="stTabs"] [data-baseweb="tab-list"],
+    div[data-testid="stTabs"] [role="tablist"] {
+        gap: 4px !important;
+        background: rgba(255,255,255,0.03) !important;
+        border: 1px solid rgba(255,255,255,0.07) !important;
+        border-radius: 10px !important;
+        padding: 5px !important;
+        margin-bottom: 2rem !important;
+        flex-wrap: wrap !important;
     }
-    .stTabs [data-baseweb="tab"] {
-        height: 40px;
-        border-radius: 7px;
-        color: #8a94b3;
-        font-weight: 600;
-        font-size: 0.86rem;
-        padding: 0 1.1rem;
-        background: transparent;
+    div[data-testid="stTabs"] [data-baseweb="tab"],
+    div[data-testid="stTabs"] [role="tab"] {
+        height: 40px !important;
+        border-radius: 7px !important;
+        color: #8a94b3 !important;
+        font-weight: 600 !important;
+        font-size: 0.86rem !important;
+        padding: 0 1.1rem !important;
+        background: transparent !important;
     }
-    .stTabs [aria-selected="true"] {
-        background: rgba(95,168,255,0.14);
+    div[data-testid="stTabs"] [aria-selected="true"] {
+        background: rgba(95,168,255,0.14) !important;
         color: #f2f4fa !important;
-        box-shadow: inset 0 0 0 1px rgba(95,168,255,0.3);
+        box-shadow: inset 0 0 0 1px rgba(95,168,255,0.3) !important;
     }
     .stTabs [data-baseweb="tab-highlight"] { display: none; }
     .stTabs [data-baseweb="tab-border"] { display: none; }
-
+ 
     /* ---------- Cards ---------- */
     .glass-card {
         background: rgba(255, 255, 255, 0.035);
