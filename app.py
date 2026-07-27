@@ -275,7 +275,7 @@ st.markdown(
         border: 1px solid rgba(239,68,68,0.25);
         border-radius: 10px;
         padding: 0.9rem 1rem;
-        font-size: 0.73rem;
+        font-size: 0.9rem;
         line-height: 1.55;
         color: #f0b8b8;
         margin-top: 1.6rem;
